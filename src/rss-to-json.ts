@@ -5,7 +5,6 @@ export default async (url: string) => {
   if (!/(^http(s?):\/\/[^\s$.?#].[^\s]*)/i.test(url)) return null
 
   const data = Buffer.from(await (await fetch(url)).arrayBuffer())
-  console.log(data.toString())
 
   const xml = new XMLParser({
     attributeNamePrefix: '',
