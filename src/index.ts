@@ -53,7 +53,7 @@ async function makeIcs(env: Env) {
 
   const calendar = ical({ name: 'Otherland Events' })
   calendar.timezone(EuropeBerlinTz)
-  const pattern = /(\d+). ([A-Z][a-zä][a-z]) (\d{4}) \((\d+):(\d+)\) (.*)/
+  const pattern = /(\d+). ([A-Z][a-zä][a-z]) (\d{4}) \((\d+):(\d+)(–.*)?\) (.*)/
   for (const it of rss!.items as RssItem[]) {
     const title = await override(env, it.title)
     const match = title.match(pattern)
@@ -78,7 +78,7 @@ async function makeIcs(env: Env) {
     const hour = Number(match[4])
     const minute = Number(match[5])
     const start = DateTime.fromObject({ year, month, day, hour, minute }, { zone: 'Europe/Berlin' })
-    const summary = match[6].trim()
+    const summary = match[7].trim()
     calendar.createEvent({
       start,
       summary,
