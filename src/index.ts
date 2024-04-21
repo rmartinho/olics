@@ -56,6 +56,7 @@ async function makeIcs(env: Env) {
   const pattern = /(\d+). ([A-Z][a-zä][a-z]) (\d{4}) \((\d+):(\d+)\) (.*)/
   for (const it of rss!.items as RssItem[]) {
     const title = await override(env, it.title)
+    console.log(title)
     const match = title.match(pattern)
     if (!match) throw `bad match ${it.title}`
     const year = Number(match[3])
