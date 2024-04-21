@@ -18,9 +18,8 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
-    "@touch4it/ical-timezones": "^1.9.0",
+    "fast-xml-parser": "^4.3.6",
     "ical-generator": "^7.1.0",
-    "luxon": "^3.4.4",
-    "rss-to-json": "^2.1.1"
+    "luxon": "^3.4.4"
   }
 }
