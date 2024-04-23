@@ -5,14 +5,10 @@ import parse from './rss-to-json'
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const cacheUrl = new URL(request.url);
-    const cacheKey = new Request(cacheUrl.toString(), request);
+    const cacheKey = request.clone()
     const cache = caches.default
-    let response = await cache.match(cacheKey, {})
-    if (response) {
-      console.log('found cached response')
-    } else {
-      console.log('found no cached response')
+    let response = await cache.match(cacheKey)
+    if (!response) {
       const content = await makeIcs(env)
       response = new Response(content, {
         headers: {
