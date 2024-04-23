@@ -8,11 +8,14 @@ export default {
     const cache = caches.default
     const cacheKey = request.clone()
     let response = await cache.match(cacheKey)
-    if (!response) {
+    if (response) {
+      console.log('found cached response')
+    } else {
+      console.log('found no cached response')
       const content = await makeIcs(env)
       response = new Response(content, {
         headers: {
-          'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+          'Cache-Control': 'public, max-age=21600, s-maxage=21600',
           'Content-Type': 'text/calendar',
           'Content-Disposition': 'attachment; filename=otherland.ics',
         },
