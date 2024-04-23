@@ -17,7 +17,7 @@ export default {
           'Content-Disposition': 'attachment; filename=otherland.ics',
         },
       })
-      await cache.put(cacheKey, response.clone())
+      ctx.waitUntil(cache.put(cacheKey, response.clone()))
     }
     return response
   },
