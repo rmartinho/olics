@@ -4,17 +4,24 @@ import { DateTime } from 'luxon'
 import parse from './rss-to-json'
 
 export default {
-  async fetch(_request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
-    const content = await makeIcs(env)
-    return new Response(content, {
-      headers: {
-        'Cache-Control': 'public, max-age=3600, s-max-age=3600',
-        'Content-Type': 'text/calendar',
-        'Content-Disposition': 'attachment; filename=otherland.ics',
-      },
-    })
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const cache = caches.default
+    const cacheKey = request.clone()
+    let response = await cache.match(cacheKey)
+    if (!response) {
+      const content = await makeIcs(env)
+      response = new Response(content, {
+        headers: {
+          'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+          'Content-Type': 'text/calendar',
+          'Content-Disposition': 'attachment; filename=otherland.ics',
+        },
+      })
+      ctx.waitUntil(cache.put(cacheKey, response.clone()))
+    }
+    return response
   },
-}
+} satisfies ExportedHandler<Env>
 
 const feedUrl = 'https://www.otherland-berlin.de/share/otherland-events.xml'
 

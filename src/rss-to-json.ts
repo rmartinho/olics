@@ -4,7 +4,15 @@ import { Buffer } from 'node:buffer'
 export default async (url: string) => {
   if (!/(^http(s?):\/\/[^\s$.?#].[^\s]*)/i.test(url)) return null
 
-  const data = Buffer.from(await (await fetch(url)).arrayBuffer())
+  const data = Buffer.from(
+    await (
+      await fetch(url, {
+        cf: {
+          cacheTtlByStatus: { '200-299': 21600, '404': 0, '500-599': 0 },
+        },
+      })
+    ).arrayBuffer()
+  )
 
   const xml = new XMLParser({
     attributeNamePrefix: '',
