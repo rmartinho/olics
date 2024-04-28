@@ -12,7 +12,7 @@ export default {
       const content = await makeIcs(env)
       response = new Response(content, {
         headers: {
-          'Cache-Control': 'public, max-age=21600, s-maxage=21600',
+          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
           'Content-Type': 'text/calendar',
           'Content-Disposition': 'attachment; filename=otherland.ics',
         },
