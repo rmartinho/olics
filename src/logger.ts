@@ -4,7 +4,9 @@ import { createMimeMessage } from 'mimetext/browser'
 
 async function log(message: string) {
   const timestamp = DateTime.now().toISO()
-  logs.push(`${timestamp} ${message}`)
+  message = `${timestamp} ${message}`
+  logs.push(message)
+  console.log(message)
 }
 log.init = (env: Env) => {
   options = { env }
