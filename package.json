@@ -17,6 +17,7 @@
   "dependencies": {
     "fast-xml-parser": "^4.3.6",
     "ical-generator": "^7.1.0",
-    "luxon": "^3.4.4"
+    "luxon": "^3.4.4",
+    "mimetext": "^3.0.24"
   }
 }

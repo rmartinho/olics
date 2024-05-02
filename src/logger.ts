@@ -1,20 +1,34 @@
-import { DateTime, Duration } from 'luxon'
-import crypto from 'node:crypto'
+import { EmailMessage } from 'cloudflare:email'
+import { DateTime } from 'luxon'
+import { createMimeMessage } from 'mimetext'
 
-function log(message: string) {
-  const id = crypto.randomUUID()
+async function log(message: string) {
   const timestamp = DateTime.now().toISO()
-  const expirationTtl = Duration.fromObject({ days: 7 }).as('seconds')
-  options.ctx.waitUntil(options.env.logs.put(id, `${timestamp} ${message}`, { expirationTtl }))
+  logs.push(`${timestamp} ${message}`)
+}
+log.init = (env: Env) => {
+  options = { env }
 }
 
-log.init = (env: Env, ctx: ExecutionContext) => {
-  options = { env, ctx }
+log.send = async () => {
+  if (logs.length == 0) return
+  const msg = createMimeMessage()
+  msg.setSender({ name: 'olics', addr: 'logs@pinus.rmf.io' })
+  msg.setRecipient('olics@rmf.io')
+  msg.setSubject('Execution logs from olics')
+  msg.addMessage({
+    contentType: 'text/plain',
+    data: logs.join('\n'),
+  })
+
+  var message = new EmailMessage('logs@pinus.rmf.io', 'olics@rmf.io', msg.asRaw())
+  return options.env.email.send(message)
 }
 
 export default log
 
+let logs = [] as string[]
+
 let options: {
   env: Env
-  ctx: ExecutionContext
 }

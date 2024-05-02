@@ -4,13 +4,10 @@ main = "src/index.ts"
 compatibility_date = "2024-04-19"
 compatibility_flags = ["nodejs_compat"]
 
-[vars]
-maxLogLength = 100
-
 [[kv_namespaces]]
 binding = "kv"
 id = "3fee84b4ac6d4ede94d793a72423f39a"
 
-[[kv_namespaces]]
-binding = "logs"
-id = "a410940ed05a411a9022bc29fb91ddd1"
+[[send_email]]
+name = "email"
+destination_address = "olics@rmf.io"
