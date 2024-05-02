@@ -1,6 +1,6 @@
 import { EmailMessage } from 'cloudflare:email'
 import { DateTime } from 'luxon'
-import { createMimeMessage } from 'mimetext'
+import { createMimeMessage } from 'mimetext/browser'
 
 async function log(message: string) {
   const timestamp = DateTime.now().toISO()
