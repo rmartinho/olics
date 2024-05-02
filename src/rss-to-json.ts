@@ -1,9 +1,22 @@
 import { XMLParser } from 'fast-xml-parser'
 import { Buffer } from 'node:buffer'
 
-export default async (url: string) => {
-  if (!/(^http(s?):\/\/[^\s$.?#].[^\s]*)/i.test(url)) return null
+export type Rss = {
+  title: string
+  description: string
+  link: string
+  image: string
+  category: string[]
+  items: RssItem[]
+}
 
+export type RssItem = {
+  title: string
+  description: string
+  link: string
+}
+
+export default async function (url: string): Promise<Rss> {
   const data = Buffer.from(
     await (
       await fetch(url, {
