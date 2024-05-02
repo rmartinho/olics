@@ -13,7 +13,6 @@ log.init = (env: Env) => {
 }
 
 log.send = async () => {
-  if (logs.length == 0) return
   const msg = createMimeMessage()
   msg.setSender({ name: 'olics', addr: 'logs@pinus.rmf.io' })
   msg.setRecipient('olics@rmf.io')
