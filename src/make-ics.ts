@@ -20,25 +20,25 @@ export default async function (rss: Rss, env: Env) {
       Jan: 1,
       Feb: 2,
       Mär: 3,
-			Mar: 3,
+      Mar: 3,
       Apr: 4,
       Mai: 5,
-			May: 5,
+      May: 5,
       Jun: 6,
       Jul: 7,
       Aug: 8,
       Sep: 9,
       Okt: 10,
-			Oct: 10,
+      Oct: 10,
       Nov: 11,
       Dez: 12,
-			Dec: 12,
+      Dec: 12,
     }[match[2]]
     if (month == null) {
       log(`bad month ${it.title}`)
       continue
     }
-    const day = +match[1])
+    const day = +match[1]
     const hour = +match[4]
     const minute = +match[5]
     const start = DateTime.fromObject({ year, month, day, hour, minute }, { zone: 'Europe/Berlin' })
