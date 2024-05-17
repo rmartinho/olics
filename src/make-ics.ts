@@ -7,15 +7,15 @@ import { Rss } from './rss-to-json'
 export default async function (rss: Rss, env: Env) {
   const calendar = ical({ name: 'Otherland Events' })
   calendar.timezone(EuropeBerlinTz)
-  const pattern = /(\d+). ([A-Z][a-zä][a-z]) (\d{4}) \((\d+):(\d+)(–.*)?\) (.*)/
+  const pattern = /((?<day>\d+). (?<monthName>[A-Z][a-zä][a-z]) (?<year>\d{4}))|((?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})) \((?<hour>\d+):(?<minute>\d+)(–.*)?\) (?<title>.*)/
   for (const it of rss.items) {
     const title = await override(env, it.title)
-    const match = title.match(pattern)
+    let match = title.match(pattern)
     if (!match) {
       log(`bad match ${it.title}`)
       continue
     }
-    const year = +match[3]
+    const year = +match.groups.year
     const month = {
       Jan: 1,
       Feb: 2,
@@ -33,16 +33,16 @@ export default async function (rss: Rss, env: Env) {
       Nov: 11,
       Dez: 12,
       Dec: 12,
-    }[match[2]]
+    }[match.groups.monthName] ?? +match.groups.month
     if (month == null) {
       log(`bad month ${it.title}`)
       continue
     }
-    const day = +match[1]
-    const hour = +match[4]
-    const minute = +match[5]
+    const day = +match.groups.day
+    const hour = +match.groups.hour
+    const minute = +match.groups.minute
     const start = DateTime.fromObject({ year, month, day, hour, minute }, { zone: 'Europe/Berlin' })
-    const summary = match[7].trim()
+    const summary = match.groups.title?.trim() ?? ''
     calendar.createEvent({
       start,
       summary,
