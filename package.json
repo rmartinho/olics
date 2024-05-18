@@ -8,14 +8,14 @@
     "cf:types": "wrangler types"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.1.0",
-    "@cloudflare/workers-types": "^4.20240419.0",
+    "@cloudflare/vitest-pool-workers": "^0.1.19",
+    "@cloudflare/workers-types": "^4.20240512.0",
     "@types/luxon": "^3.4.2",
-    "typescript": "^5.0.4",
-    "wrangler": "^3.0.0"
+    "typescript": "^5.4.5",
+    "wrangler": "^3.57.0"
   },
   "dependencies": {
-    "fast-xml-parser": "^4.3.6",
+    "fast-xml-parser": "^4.4.0",
     "ical-generator": "^7.1.0",
     "luxon": "^3.4.4",
     "mimetext": "^3.0.24"
