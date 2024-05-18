@@ -7,33 +7,35 @@ import { Rss } from './rss-to-json'
 export default async function (rss: Rss, env: Env) {
   const calendar = ical({ name: 'Otherland Events' })
   calendar.timezone(EuropeBerlinTz)
-  const pattern = /((?<day1>\d+). (?<month1>[A-Z][a-zä][a-z]) (?<year1>\d{4}))|((?<year2>\d{4})-(?<month2>\d{2})-(?<day2>\d{2})) \((?<hour>\d+):(?<minute>\d+)(–.*)?\) (?<title>.*)/
+  const pattern =
+    /((?<day1>\d+). (?<month1>[A-Z][a-zä][a-z]) (?<year1>\d{4}))|((?<year2>\d{4})-(?<month2>\d{2})-(?<day2>\d{2})) \((?<hour>\d+):(?<minute>\d+)(–.*)?\) (?<title>.*)/
   for (const it of rss.items) {
     const title = await override(env, it.title)
     let match = title.match(pattern)
-    if (!match) {
+    if (!match || !match.groups) {
       log(`bad match ${it.title}`)
       continue
     }
     const year = +(match.groups.year1 ?? match.groups.year2)
-    const month = {
-      Jan: 1,
-      Feb: 2,
-      Mär: 3,
-      Mar: 3,
-      Apr: 4,
-      Mai: 5,
-      May: 5,
-      Jun: 6,
-      Jul: 7,
-      Aug: 8,
-      Sep: 9,
-      Okt: 10,
-      Oct: 10,
-      Nov: 11,
-      Dez: 12,
-      Dec: 12,
-    }[match.groups.month1] ?? +match.groups.month2
+    const month =
+      {
+        Jan: 1,
+        Feb: 2,
+        Mär: 3,
+        Mar: 3,
+        Apr: 4,
+        Mai: 5,
+        May: 5,
+        Jun: 6,
+        Jul: 7,
+        Aug: 8,
+        Sep: 9,
+        Okt: 10,
+        Oct: 10,
+        Nov: 11,
+        Dez: 12,
+        Dec: 12,
+      }[match.groups.month1] ?? +match.groups.month2
     if (month == null) {
       log(`bad month ${it.title}`)
       continue
