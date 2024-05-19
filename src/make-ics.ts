@@ -36,13 +36,16 @@ export default async function (rss: Rss, env: Env) {
         Dez: 12,
         Dec: 12,
       }[match.groups.month1] ?? +match.groups.month2
-    if (month == null) {
+    if (!month || isNaN(month)) {
       log(`bad month ${it.title}`)
       continue
     }
     const day = +(match.groups.day1 ?? match.groups.day2)
     const hour = +match.groups.hour
     const minute = +match.groups.minute
+    if(isNaN(year + month + day + hour + minute)) {
+      log(`NaN date ${it.title}`)
+    }
     const start = DateTime.fromObject({ year, month, day, hour, minute }, { zone: 'Europe/Berlin' })
     const summary = match.groups.title?.trim() ?? ''
     calendar.createEvent({
