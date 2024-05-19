@@ -8,7 +8,7 @@ export default async function (rss: Rss, env: Env) {
   const calendar = ical({ name: 'Otherland Events' })
   calendar.timezone(EuropeBerlinTz)
   const pattern =
-    /((?<day1>\d+). (?<month1>[A-Z][a-zä][a-z]) (?<year1>\d{4}))|((?<year2>\d{4})-(?<month2>\d{2})-(?<day2>\d{2})) \((?<hour>\d+):(?<minute>\d+)(–.*)?\) (?<title>.*)/
+    /((?<day1>\d+). (?<month1>[A-Z][a-zä][a-z]) (?<year1>\d{4})|(?<year2>\d{4})[-–](?<month2>\d{2})[-–](?<day2>\d{2})) \((?<hour>\d+):(?<minute>\d+)([-–].*)?\) (?<title>.*)/
   for (const it of rss.items) {
     const title = await override(env, it.title)
     let match = title.match(pattern)
